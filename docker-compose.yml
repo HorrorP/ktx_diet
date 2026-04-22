@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: ktx_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ktx
+      POSTGRES_USER: ktx
+      POSTGRES_PASSWORD: ktx
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ktx -d ktx"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: golang:1.22
+    container_name: ktx_api
+    working_dir: /app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://ktx:ktx@postgres:5432/ktx?sslmode=disable
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    command: sh -c "go mod tidy && go run ./cmd/api"
+
+volumes:
+  postgres_data:

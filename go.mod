@@ -5,6 +5,7 @@ go 1.26.2
 require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/google/generative-ai-go v0.20.1
+	github.com/joho/godotenv v1.5.1
 	google.golang.org/api v0.276.0
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/postgres v1.6.0

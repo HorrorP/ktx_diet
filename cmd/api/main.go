@@ -13,11 +13,19 @@ import (
 	"ktx-diet/internal/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
+
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("error loading .env file")
+	}
+
 	db := mustInitDB()
 	mustMigrate(db)
 

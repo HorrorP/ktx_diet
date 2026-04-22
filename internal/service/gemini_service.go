@@ -25,7 +25,7 @@ func NewGeminiService(ctx context.Context, apiKey string) (GeminiService, error)
 		return nil, err
 	}
 
-	model := client.GenerativeModel("gemini-1.5-flash")
+	model := client.GenerativeModel("gemini-2.5-flash")
 	model.ResponseMIMEType = "application/json"
 	return &geminiService{model: model}, nil
 }
